@@ -9,4 +9,10 @@ export class AppController {
   getHello(): string {
     return this.appService.getHello();
   }
+
+  // 임의로 추가한 Get Route Handler
+  @Get('/hi')
+  getHi(): object {
+    return { isSuccess: true, contents: 'Hi!', error: '' };
+  }
 }
