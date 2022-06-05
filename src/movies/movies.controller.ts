@@ -1,29 +1,41 @@
-import { Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
+import { Movie } from './entities/movie.enrity';
+import { MoviesService } from './movies.service';
 
 @Controller('movies')
 export class MoviesController {
+  constructor(private readonly moviesService: MoviesService) {}
+
   @Get()
-  getAllMovies() {
-    return 'This will return all movies';
+  getAllMovies(): Movie[] {
+    return this.moviesService.getAll();
   }
 
   @Get('/:id')
-  getOneMovie(@Param('id') movieId: string) {
-    return `This will return one movie with the id : ${movieId}`;
+  getOneMovie(@Param('id') movieId: string): Movie {
+    return this.moviesService.getOne(movieId);
   }
 
   @Post()
-  createMovie() {
-    return 'This will create a movie';
+  createMovie(@Body() movieData) {
+    return this.moviesService.create(movieData);
   }
 
   @Delete('/:id')
   deleteMovie(@Param('id') movieId: string) {
-    return `This will delete a movie with the id : ${movieId}`;
+    return this.moviesService.deleteOne(movieId);
   }
 
   @Patch('/:id')
-  patchMovie(@Param('id') movieId: string) {
-    return `This will patch a movie with the id : ${movieId}`;
+  patchMovie(@Param('id') movieId: string, @Body() updateData) {
+    return this.moviesService.update(movieId, updateData);
   }
 }
